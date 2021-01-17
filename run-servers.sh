@@ -9,9 +9,14 @@ function cleanup_func {
 trap "exit \$exit_code" INT TERM
 trap "exit_code=\$?; cleanup_func; kill 0" EXIT
 
+function start_server {
+    ./${IMAGE} --server Server.ListenPort="$1" Server.Name="$2" Server.EnableSingleplayer="True" Server.UseNewNetcode="{$3:-True}" &
+}
+
+IMAGE=${IMAGE:-"OpenRA-Red-Alert-devel-x86_64.AppImage"}
+
 echo "Starting servers..."
-ListenPort="1234" Name="Old Netcode" EnableSingleplayer="True" UseNewNetcode="False" ./launch-dedicated.sh &
-ListenPort="1235" Name="New Netcode 1" EnableSingleplayer="True" UseNewNetcode="True" ./launch-dedicated.sh &
-ListenPort="1236" Name="New Netcode 2" EnableSingleplayer="True" UseNewNetcode="True" ./launch-dedicated.sh &
-ListenPort="1237" Name="New Netcode 3" EnableSingleplayer="True" UseNewNetcode="True" ./launch-dedicated.sh &
+start_server "1234" "adamm: Old Netcode" "False"
+start_server "1235" "adamm: New Netcode 1"
+start_server "1236" "adamm: New Netcode 2"
 wait
