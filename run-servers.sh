@@ -10,7 +10,7 @@ trap "exit \$exit_code" INT TERM
 trap "exit_code=\$?; cleanup_func; kill 0" EXIT
 
 function start_server {
-    ./${IMAGE} --server Server.ListenPort="$1" Server.Name="$2" Server.EnableSingleplayer="True" Server.UseNewNetcode="{$3:-True}" &
+    ./${IMAGE} --server Server.ListenPort="$1" Server.Name="$2" Server.EnableSingleplayer="True" Server.UseNewNetcode="${3:-True}" &
 }
 
 IMAGE=${IMAGE:-"OpenRA-Red-Alert-devel-x86_64.AppImage"}
